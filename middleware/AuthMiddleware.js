@@ -2,12 +2,13 @@
 const UserModel =require('../models/userModel')
 const jwt=require('jsonwebtoken')
 const bcrypt=require('bcrypt');
-const PostModel = require('../models/PostModel');
+
 
 exports.verifyToken=async(req,res,next)=>{
     try {
        
-        const token=req.cookies.access_token;
+        let token=req.headers.token;
+        console.log(token)
         
 
     if(!token){
@@ -42,17 +43,7 @@ exports.verifyUser=(req,res,next)=>{
         }
     
 }
-exports.verifyUserPost= async(req,res,next)=>{
-    const post= await PostModel.findById(req.params.id)
-    
-        if(req.user.id === post.userId || req.user.isAdmin){
-            next()
-        }else{
-            res.status(403)
-        throw new Error("Not authorized")
-        }
-    
-}
+
 exports.verifyIsAdmin=(req,res,next)=>{
     
         if(req.user.isAdmin){

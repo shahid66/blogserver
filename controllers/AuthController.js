@@ -12,6 +12,8 @@ const generateToken=(id,isAdmin)=>{
   }
 // Create User
 exports.register= async(req,res)=>{
+  
+
     try{
         const { name, email,password } = req.body;
         
@@ -32,17 +34,18 @@ exports.register= async(req,res)=>{
         .json({ status: "success", token: token, data:{_id,name,email} });
       }else{
         
-        res.status(404);
-        throw new Error("User not create");
+        res.status(404).json("User not create");
+        
       }
       }catch(err){
         res.status(404);
-        console.log(err)
-        throw new Error("User already exists");
+        res.status(404).json("User already created");
       }
     }
 
 exports.login=async(req,res)=>{
+
+  
  
     const {email,password}=req.body
   
@@ -69,7 +72,7 @@ exports.login=async(req,res)=>{
                 httpOnly:true,
             })
             .status(200)
-            .json({data:{_id,name,email} });
+            .json({"token":token,data:{_id,name,email} });
     }else{
         res.status(400)
         throw new Error ("Invalid Email or Password") 
